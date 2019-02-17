@@ -96,6 +96,8 @@
         "test": "sh ./scripts/e2e.sh"
     },
     "dependencies": {
+        "@types/get-port": "^4.0.1",
+        "get-port": "^4.1.0",
         "vscode-languageclient": "^4.1.4"
     },
     "devDependencies": {
