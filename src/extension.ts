@@ -6,8 +6,10 @@ import {
     NodeModule,
     TransportKind
 } from "vscode-languageclient";
+import getPort = require("get-port");
 
-export function activate(context: ExtensionContext): void {
+
+export async function activate(context: ExtensionContext): Promise<void> {
 
     const config: WorkspaceConfiguration = workspace.getConfiguration("WolframLanguageServer");
     let wolframkernel: string = config.get<string>("WolframPath");
@@ -15,11 +17,19 @@ export function activate(context: ExtensionContext): void {
     if (wlServerDir[-1] !== "\\" && wlServerDir[-1] !== "/") {
         wlServerDir += "/";
     }
+
     let socketport: number = Number(config.get<number>("Port"));
+    socketport = await getPort({port: socketport}).then((port: number): number => {
+        if(port !== socketport) {
+            console.log("${socketport} is currently in use. Using ${port} instead.");
+        }
+        return port;
+    });
+
     let serverOptions: NodeModule = {
         module: wlServerDir + "init.wls",
         runtime: wolframkernel,
-        // args: ["--theme=" + theme],
+        // transport: TransportKind.pipe,
         transport: {
             kind: TransportKind.socket,
             port: socketport
