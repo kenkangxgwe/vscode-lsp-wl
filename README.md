@@ -61,7 +61,7 @@ After the extension is launched, go to **Preference -> Settings -> User Settings
   For **Windows** users, the default path is `C:\Program Files\Wolfram
   Research\Mathematica\11.*\wolfram.exe`.  
   For **MaxOS** users, the default path is
-  `/Applications/Mathematica.app/Contents/wolfram`.  
+  `/Applications/Mathematica.app/Contents/MacOS/wolfram`.  
   For **Linux** users, the default path is
   `/usr/local/Wolfram/Mathematica/11.*/wolfram`.
 
