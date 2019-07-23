@@ -8,14 +8,17 @@
 **Table of Contents**
 
 - [Visual Studio Code Client for Wolfram Language Server](#visual-studio-code-client-for-wolfram-language-server)
-    - [Installation](#installation)
-    - [Client Settings](#client-settings)
-    - [Features](#features)
-    - [Footnotes](#footnotes)
+  - [Installation](#installation)
+  - [Installation](#installation-1)
+  - [Client Settings](#client-settings)
+  - [Features](#features)
+  - [Footnotes](#footnotes)
 
 <!-- markdown-toc end -->
 
-*Please be advised to git pull the lastest version, which has been released on 02/05/2019*.
+*Please be advised to git pull the lastest minor version __0.2.x__. There are some
+breaking changes you want to know more in the server's
+[README](https://github.com/kenkangxgwe/lsp-wl/blob/master/README.md).*
 
 **Wolfram Language Server (WLServer)** is an implementation of the Microsoft's
 [Language Server Protocol
@@ -31,17 +34,27 @@ However, you still need to manually install the
 
 ## Installation
 
+## Installation
+
 0. [Wolfram Mathematica](http://www.wolfram.com/mathematica/) (11.2 or higher<a
-   name="ref1"></a>[<sup>1</sup>](#footnote1)).
+    name="ref1"></a>[<sup>1</sup>](#footnote1)) or [Wolfram
+    Engine](https://www.wolfram.com/engine/) (12.0 or higher).
 
 1. Download the [server](https://github.com/kenkangxgwe/lsp-wl) from its
    repository.
 
-  ```
-  git clone https://github.com/kenkangxgwe/lsp-wl.git
-  ```
+    ```
+    git clone https://github.com/kenkangxgwe/lsp-wl.git
+    ```
 
-2. Install the client extenstion from [Visual Studio Marketplace: Wolfram
+2. Install the dependent paclets with the correct versions from the Wolfram kernel / Mathematica.
+(_This will cost a while for the first time_) :  
+    ``` mathematica
+    PacletInstall[{"AST", "0.11"}, "Site" -> "http://pacletserver.wolfram.com", "UpdateSites" -> True]
+    PacletInstall[{"Lint", "0.11"}, "Site" -> "http://pacletserver.wolfram.com", "UpdateSites" -> True]
+    ```
+
+3. Install the client extenstion from [Visual Studio Marketplace: Wolfram
 Language Server](https://marketplace.visualstudio.com/items?itemName=lsp-wl.lsp-wl-client).
 
 ## Client Settings
@@ -69,31 +82,56 @@ Restart VS Code to take effect.
 
 ## Features
 
-- *Hover:* Provide definitions for Wolfram functions and system variables, such
-  as `String` and `$Path`.
-
-![hover](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/hover.png)
-
-- *Completion:* The completion is triggered by the client automatically.
-  Currently, Wolfram functions and system variables would be displayed.
-
-- *Completion Resolve:* Further information would be provided for the items in
-  the list.
-
-![completion](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion.png)
-
-- *Diagnostics:* Syntax error would be underlined. However, the specific syntax
-  error is not supported at the moment.
+- **DocumentSymbol:** You may typeset your package in the same way that
+  Mathematica FrontEnd handles it: a cell begins with two lines of comments,
+  where the first line specifies the style of the cell and the second line names it.
+  So you may get the outline structure of the file.
   
-![diagnostics](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/diagnostics.png)
+  ``` mathematica
+  (* ::Title:: *)
+  (*Title of the file*)
 
-This is an early release, so more features are on the way. Syntax highlight is
-NOT supported according to the design of LSP, but there are already some good
-enough extensions like [Wolfram
-Language](https://marketplace.visualstudio.com/items?itemName=flipphillips.wolfram-language).
+  (* ::Section:: *)
+  (*Section 1*)
+  ```
+  
+  ![hover](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/documentSymbol.png)
+
+- **Hover:** Provide documentations for functions and variables from the
+  ``System` `` context, such as `String` and `$Path`, the `MessageName` and
+  the special numerical literals with `^^` or `*^`.
+
+  ![hover](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/hover.png)
+
+- **Completion:** The completion is shown by the client automatically.
+  Functions and system variables from the ``System` `` context that matches the
+  input would be displayed. To enter an unicode character, you may use the
+  leader key <kbd>\\</kbd> followed by the alias just like <kbd>esc</kbd> in
+  Wolfram FrondEnd. E.g., `<esc>a` in the FrontEnd is input as `\a` in the
+  editor and the server will show you the available completions.
+
+  ![completion-unicode](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion_alias.png)
+
+- **Completion Resolve:** Further information (such as documentation) would be
+  provided for the items in the list.
+
+  ![completion](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion.png)
+
+- **Diagnostics:** Syntax error would be underlined. This feature is powered by
+  Brenton's `AST` and `Lint` paclets, thank you
+  [@bostick](https://github.com/bostick).
+
+  ![diagnostics](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/diagnostics.png)
+
+
+This is an early release, so more features are on the way. Notice that,
+syntax highlight will NOT be provided as long as it is excluded in the LSP,
+but there are already some good enough extensions written [by Flip
+Phillips](https://marketplace.visualstudio.com/items?itemName=flipphillips.wolfram-language)
+and
+[by shigma](https://marketplace.visualstudio.com/items?itemName=shigma.vscode-wl).
 
 ## Footnotes
 
 <a name="footnote1"> </a> **[1]** `SocketListen[]` is used for server-client
-communication, which is introduced since 11.2. We plan to support stdio for
-better compatibility [^](#ref1)
+communication, which is introduced since 11.2. [^](#ref1)
