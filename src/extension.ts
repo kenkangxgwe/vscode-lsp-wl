@@ -1,6 +1,9 @@
 "use strict";
 
-import { workspace, ExtensionContext, Disposable, WorkspaceConfiguration } from "vscode";
+import {
+    workspace, ExtensionContext, Disposable, WorkspaceConfiguration
+} from "vscode";
+
 import {
     LanguageClient, LanguageClientOptions,
     NodeModule,
@@ -32,7 +35,7 @@ export function activate(context: ExtensionContext): void {
     let clientOptions: LanguageClientOptions = {
         documentSelector: ["wolfram"],
         synchronize: {
-            fileEvents: workspace.createFileSystemWatcher("**/*.*")
+            // fileEvents: workspace.createFileSystemWatcher("**/*.*")
         }
     };
 
