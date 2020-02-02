@@ -4,14 +4,8 @@
 		"target": "es6",
 		"outDir": "out",
 		"rootDir": "src",
-		"lib": [ "es6" ],
-		"sourceMap": true,
-		"noImplicitAny": true,
-		"noImplicitReturns": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"sourceMap": true
 	},
-	"include": [
-		"src"
-	]
+	"include": ["src"],
+	"exclude": ["node_modules", ".vscode-test"]
 }

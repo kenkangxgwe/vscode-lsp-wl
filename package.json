@@ -1,6 +1,6 @@
 {
     "name": "lsp-wl-client",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "publisher": "lsp-wl",
     "author": "kenkangxgwe",
     "license": "MIT",
@@ -97,8 +97,7 @@
         "test": "sh ./scripts/e2e.sh"
     },
     "dependencies": {
-        "vscode-languageclient": "^5.2.1",
-        "vscode-debugadapter": "1.38.0-pre.4"
+        "vscode-languageclient": "^5.2.1"
     },
     "devDependencies": {
         "vscode": "^1.1.35",

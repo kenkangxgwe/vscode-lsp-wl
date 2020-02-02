@@ -8,11 +8,10 @@
 **Table of Contents**
 
 - [Visual Studio Code Client for Wolfram Language Server](#visual-studio-code-client-for-wolfram-language-server)
-  - [Installation](#installation)
-  - [Installation](#installation-1)
-  - [Client Settings](#client-settings)
-  - [Features](#features)
-  - [Footnotes](#footnotes)
+    - [Installation](#installation)
+    - [Client Settings](#client-settings)
+    - [Features](#features)
+    - [Footnotes](#footnotes)
 
 <!-- markdown-toc end -->
 
@@ -34,8 +33,6 @@ However, you still need to manually install the
 
 ## Installation
 
-## Installation
-
 0. [Wolfram Mathematica](http://www.wolfram.com/mathematica/) (11.2 or higher<a
     name="ref1"></a>[<sup>1</sup>](#footnote1)) or [Wolfram
     Engine](https://www.wolfram.com/engine/) (12.0 or higher).
@@ -48,10 +45,10 @@ However, you still need to manually install the
     ```
 
 2. Install the dependent paclets with the correct versions from the Wolfram kernel / Mathematica.
-(_This will cost a while for the first time_) :  
+(_This will take a while for the first time_) :  
     ``` mathematica
-    PacletInstall[{"AST", "0.11"}, "Site" -> "http://pacletserver.wolfram.com", "UpdateSites" -> True]
-    PacletInstall[{"Lint", "0.11"}, "Site" -> "http://pacletserver.wolfram.com", "UpdateSites" -> True]
+    PacletInstall["AST", "UpdateSites" -> True]
+    PacletInstall["Lint", "UpdateSites" -> True]
     ```
 
 3. Install the client extenstion from [Visual Studio Marketplace: Wolfram
@@ -122,6 +119,19 @@ Restart VS Code to take effect.
   [@bostick](https://github.com/bostick).
 
   ![diagnostics](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/diagnostics.png)
+
+- **Definition / References / DocumentHighlight:** It is now able to look up the
+  definition and references of a local variable in a scope such as `Module` or
+  pattern rules.
+
+  ![references](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/references.png)
+
+- **Document Color / Color Presentation:** Both Named Colors and
+  Color Models with constant parameters are able to show and modify.  
+  (_Experimental, may have performance issues._)
+
+  ![documentColor](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/documentColor.png)
+
 
 
 This is an early release, so more features are on the way. Notice that,
