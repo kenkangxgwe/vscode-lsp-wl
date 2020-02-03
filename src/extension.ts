@@ -10,6 +10,11 @@ import {
     TransportKind
 } from "vscode-languageclient";
 
+import {
+    debug, DebugSession, DebugConfigurationProvider, DebugAdapterDescriptorFactory,
+    DebugAdapterDescriptor, DebugAdapterServer, ProviderResult
+} from "vscode";
+
 import getPort = require('get-port');
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -54,7 +59,24 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
     let disposable: Disposable = client.start();
 
+    // register debug type "lsp-wl"
+
+    context.subscriptions.push(debug.registerDebugConfigurationProvider("dap-wl", new WolframDebugConfigProvider()));
+    context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("dap-wl", new WolframDebugAdapterDescriptorFactory()));
     // push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
     context.subscriptions.push(disposable);
+}
+
+class WolframDebugConfigProvider implements DebugConfigurationProvider { }
+
+class WolframDebugAdapterDescriptorFactory implements DebugAdapterDescriptorFactory {
+
+    createDebugAdapterDescriptor(session: DebugSession, executable: undefined): ProviderResult<DebugAdapterDescriptor> {
+        if (typeof session.configuration.port === "number") {
+            return new DebugAdapterServer(session.configuration.port);
+        }
+        return executable;
+    }
+
 }

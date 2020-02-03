@@ -86,6 +86,56 @@
                     ".wls"
                 ]
             }
+        ],
+        "debuggers": [
+            {
+                "type": "dap-wl",
+                "label": "Wolfram Debug Adapter",
+                "languages": [
+                    "wolfram"
+                ],
+                "configurationAttributes": {
+                    "launch": {
+                        "required": [
+                            "port"
+                        ],
+                        "properties": {
+                            "port": {
+                                "type": "number",
+                                "description": "port of the dap-wl",
+                                "default": 8216
+                            },
+                            "trace": {
+                                "type": "boolean",
+                                "description": "Enable logging of the Debug Adapter Protocol.",
+                                "default": true
+                            }
+                        }
+                    }
+                },
+                "initialConfigurations": [
+                    {
+                        "type": "dap-wl",
+                        "request": "attach",
+                        "name": "Ask for file name",
+                        "program": "",
+                        "stopOnEntry": true
+                    }
+                ],
+                "configurationSnippets": [
+                    {
+                        "label": "Wolfram Debug Adapter: Attach",
+                        "description": "Attach current workspace to a wolfram kernel session.",
+                        "body": {
+                            "type": "dap-wl",
+                            "request": "attach",
+                            "name": "Ask for file name",
+                            "program": "",
+                            "stopOnEntry": true
+                        }
+                    }
+                ]
+            }
         ]
     },
     "scripts": {
@@ -98,7 +148,8 @@
     },
     "dependencies": {
         "get-port": "^5.1.1",
-        "vscode-languageclient": "^5.2.1"
+        "vscode-languageclient": "^5.2.1",
+        "vscode-debugadapter": "1.37.1"
     },
     "devDependencies": {
         "@types/mocha": "^5.2.7",
