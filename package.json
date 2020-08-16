@@ -96,15 +96,7 @@
                 ],
                 "configurationAttributes": {
                     "launch": {
-                        "required": [
-                            "port"
-                        ],
                         "properties": {
-                            "port": {
-                                "type": "number",
-                                "description": "port of the dap-wl",
-                                "default": 8216
-                            },
                             "trace": {
                                 "type": "boolean",
                                 "description": "Enable logging of the Debug Adapter Protocol.",
