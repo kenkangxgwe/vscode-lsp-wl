@@ -10,7 +10,19 @@
 - [Visual Studio Code Client for Wolfram Language Server](#visual-studio-code-client-for-wolfram-language-server)
     - [Installation](#installation)
     - [Client Settings](#client-settings)
-    - [Features](#features)
+        - [Language support](#language-support)
+        - [Debugger support](#debugger-support)
+    - [Language Server Features](#language-server-features)
+        - [DocumentSymbol](#documentsymbol)
+        - [Hover](#hover)
+        - [Completion](#completion)
+        - [Diagnostics](#diagnostics)
+        - [Definition / References / Document Highlight](#definition--references--document-highlight)
+        - [Code Action](#code-action)
+        - [Document Color / Color Presentation](#document-color--color-presentation)
+    - [Debug Adapter Features](#debug-adapter-features)
+        - [Evaluate](#evaluate)
+        - [Variables](#variables)
     - [Footnotes](#footnotes)
 
 <!-- markdown-toc end -->
@@ -56,6 +68,8 @@ Language Server](https://marketplace.visualstudio.com/items?itemName=lsp-wl.lsp-
 
 ## Client Settings
 
+### Language support
+
 Once you have installed the extension, a few settings have to be done manually
 in the client side to make things work.
 
@@ -77,69 +91,141 @@ After the extension is launched, go to **Preference -> Settings -> User Settings
 
 Restart VS Code to take effect.
 
-## Features
+### Debugger support
 
-- **DocumentSymbol:** You may typeset your package in the same way that
-  Mathematica FrontEnd handles it: a cell begins with two lines of comments,
-  where the first line specifies the style of the cell and the second line names it.
-  So you may get the outline structure of the file.
-  
-  ``` mathematica
-  (* ::Title:: *)
-  (*Title of the file*)
+To enable debugger, you need to add the configuration to the project that you
+are working on by clicking on **Run -> Add configuration...** in the menu. In
+the opened `.vscode/launch.json` file, select `Wolfram Debug Adapter: Attach` in
+the completion list.
 
-  (* ::Section:: *)
-  (*Section 1*)
-  ```
-  
-  ![hover](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/documentSymbol.png)
+![debugger-configuration](images/debugger_configuration.png)
 
-- **Hover:** Provide documentations for functions and variables from the
-  ``System` `` context, such as `String` and `$Path`, the `MessageName` and
-  the special numerical literals with `^^` or `*^`.
+Or add the following configuration directly to the `launch.json`.
 
-  ![hover](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/hover.png)
+```json
+"configurations": [
+    {
+        "type": "dap-wl",
+        "request": "attach",
+        "name": "Create a new Wolfram Kernel",
+        "stopOnEntry": true
+    }
+]
+```
 
-- **Completion:** The completion is shown by the client automatically.
-  Functions and system variables from the ``System` `` context that matches the
-  input would be displayed. To enter an unicode character, you may use the
-  leader key <kbd>\\</kbd> followed by the alias just like <kbd>esc</kbd> in
-  Wolfram FrondEnd. E.g., `<esc>a` in the FrontEnd is input as `\a` in the
-  editor and the server will show you the available completions.
+To start the debugger, jump to the `Run` tab in the sidebar and select the
+configuration name just added and clicked the `Start Debugging` button.
 
-  ![completion-unicode](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion_alias.png)
+## Language Server Features
 
-- **Completion Resolve:** Further information (such as documentation) would be
-  provided for the items in the list.
+### DocumentSymbol
 
-  ![completion](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion.png)
+You may typeset your package in the same way that Mathematica FrontEnd handles
+it: a cell begins with two lines of comments, where the first line specifies the
+style of the cell and the second line names it. So you may get the outline
+structure of the file.
 
-- **Diagnostics:** Syntax error would be underlined. This feature is powered by
-  Brenton's `AST` and `Lint` paclets, thank you
-  [@bostick](https://github.com/bostick).
+``` mathematica
+(* ::Title:: *)
+(*Title of the file*)
 
-  ![diagnostics](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/diagnostics.png)
+(* ::Section:: *)
+(*Section 1*)
+```
 
-- **Definition / References / DocumentHighlight:** It is now able to look up the
-  definition and references of a local variable in a scope such as `Module` or
-  pattern rules.
+![documentSymbol](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/documentSymbol.png)
 
-  ![references](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/references.png)
+### Hover
 
-- **Document Color / Color Presentation:** Both Named Colors and
-  Color Models with constant parameters are able to show and modify.  
-  (_Experimental, may have performance issues._)
+Provide documentations for functions and variables from the ``System` ``
+context, such as `String` and `$Path`, the `MessageName` and the special
+numerical literals with `^^` or `*^`.
 
-  ![documentColor](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/documentColor.png)
+![hover](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/hover.png)
 
+### Completion
 
+The completion is shown by the client automatically. Functions and system
+variables from the ``System` `` context that matches the input would be
+displayed. To enter an unicode character, you may use the leader key
+<kbd>\\</kbd> followed by the alias just like <kbd>esc</kbd> in Wolfram
+FrondEnd. E.g., `<esc>a` in the FrontEnd is input as `\a` in the editor and the
+server will show you the available completions.
 
-This is an early release, so more features are on the way. Notice that,
-syntax highlight will NOT be provided as long as it is excluded in the LSP,
+![completion-unicode](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion_alias.png)
+
+**Completion Resolve:** Further information (such as documentation) would be
+provided for the items in the list.
+
+![completion](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/completion.png)
+
+### Diagnostics
+
+Syntax error would be underlined. This feature is powered by
+[CodeParser](https://github.com/WolframResearch/codeparser) and
+[CodeInspector](https://github.com/WolframResearch/codeinspector) paclets, thank
+you [@bostick](https://github.com/bostick).
+
+![diagnostics](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/diagnostics.png)
+
+### Definition / References / Document Highlight
+
+It is now able to look up the definition and references of a local variable in a
+scope such as `Module` or pattern rules.
+
+![references](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/references.png)
+
+### Code Action
+
+Code action is now able to,
+
+- Open the documentation of system symbols in Mathematica (Not available for
+  Wolfram Engine).  
+  ![documentation](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/codeActionSymbolDocumentation.png)
+
+- Evaluate the selected code if debugger is running. See [Evaluate](#evaluate).
+
+### Document Color / Color Presentation
+
+Both Named Colors and
+Color Models with constant parameters are able to show and modify.  
+(_Experimental, may have performance issues._)
+
+![documentColor](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/documentColor.png)
+
+This is under development, so more features are on the way. Notice that,
+**syntax highlight** will NOT be provided as long as it is excluded in the LSP,
 but there are already some good enough extensions written [by Flip
 Phillips](https://marketplace.visualstudio.com/items?itemName=flipphillips.wolfram-language)
 and
 [by shigma](https://marketplace.visualstudio.com/items?itemName=shigma.vscode-wl).
+
+## Debug Adapter Features
+
+### Evaluate
+
+Code evaluation can be run from the code action of the selection or code lens
+below each section title. The results are usually shown in the debug console on
+the editor side.
+
+![evaluate-code-action](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/evaluate_code_action.png)
+
+Expressions can also be directly input from the debug console.
+
+![evaluate-debug-console](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/evaluate_debug_console.png)
+
+### Variables
+
+After evaluation, the symbol values can be retrieved from the editor. This
+includes the own values of variables and the down/up/sub values of functions
+defined.
+
+![variables](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/variables.png)
+
+The behavior of the variables mimics the workspace in MATLAB, so all the symbols
+defined in the debug console as well as evaluated from the file will be
+recorded. This also includes contexts other than ``Global` ``. The editor can
+also watch on a specific expression after each evaluation if applicable.
 
 ## Footnotes
 
