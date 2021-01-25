@@ -10,6 +10,11 @@ import {
     TransportKind
 } from "vscode-languageclient";
 
+import {
+    debug, DebugSession, DebugConfigurationProvider, DebugAdapterDescriptorFactory,
+    DebugAdapterDescriptor, DebugAdapterServer, ProviderResult
+} from "vscode";
+
 import getPort = require('get-port');
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -21,40 +26,58 @@ export async function activate(context: ExtensionContext): Promise<void> {
         wlServerDir += "/";
     }
 
-    let socketport: number = Number(config.get<number>("Port"));
-    socketport = await getPort({ port: socketport }).then((port: number): number => {
-        if (port !== socketport) {
-            console.log("${socketport} is currently in use. Using ${port} instead.");
-        }
-        return port;
-    });
+    const defaultSocketPort: number = Number(config.get<number>("Port"));
+    let socketPort = await getPort({ port: defaultSocketPort });
+    if (socketPort !== defaultSocketPort) {
+        console.log("${defaultSocketPort} is currently in use. Using ${socketPort} instead.");
+    }
 
     let serverOptions: NodeModule = {
         module: wlServerDir + "init.wls",
         runtime: wolframkernel,
-        // args: ["--theme=" + theme],
         transport: {
             kind: TransportKind.socket,
-            port: socketport
+            port: socketPort
         },
         options: {
             execArgv: ["-script"]
         }
     };
 
+    let debuggerPort: number = await getPort();
     let clientOptions: LanguageClientOptions = {
         documentSelector: ["wolfram"],
-        synchronize: {
-            // fileEvents: workspace.createFileSystemWatcher("**/*.*")
+        initializationOptions: {
+            debuggerPort: debuggerPort
         }
     };
 
-    // create the language client and start the client.
-    let client: LanguageClient = new LanguageClient("WolframLanguageServer", "Wolfram Language Server", serverOptions, clientOptions);
-
-    let disposable: Disposable = client.start();
-
     // push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
-    context.subscriptions.push(disposable);
+
+    // create the language client and start the client.
+    context.subscriptions.push(new LanguageClient("WolframLanguageServer",
+        "Wolfram Language Server", serverOptions, clientOptions).start());
+    // register debug type "dap-wl"
+    context.subscriptions.push(debug.registerDebugConfigurationProvider("dap-wl",
+        new WolframDebugConfigProvider()));
+    context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("dap-wl",
+        new WolframDebugAdapterDescriptorFactory(debuggerPort)));
+}
+
+class WolframDebugConfigProvider implements DebugConfigurationProvider { }
+
+class WolframDebugAdapterDescriptorFactory implements DebugAdapterDescriptorFactory {
+
+    port: number;
+
+    constructor(port: number) {
+        this.port = port;
+    }
+
+    createDebugAdapterDescriptor(_session: DebugSession, _executable:
+        undefined): ProviderResult<DebugAdapterDescriptor> {
+        return new DebugAdapterServer(this.port);
+    }
+
 }
