@@ -56,11 +56,12 @@ However, you still need to manually install the
     git clone https://github.com/kenkangxgwe/lsp-wl.git
     ```
 
-2. Install the dependent paclets with the correct versions from the Wolfram kernel / Mathematica.
-(_This will take a while for the first time_) :  
+2. Install the dependent paclets with the correct versions (currently 1.0 or
+later) from the Wolfram kernel / Mathematica.
+(_This will cost some time for the first time_) :  
     ``` mathematica
-    PacletInstall["AST", "UpdateSites" -> True]
-    PacletInstall["Lint", "UpdateSites" -> True]
+    PacletInstall["CodeParser"]
+    PacletInstall["CodeInspector"]
     ```
 
 3. Install the client extenstion from [Visual Studio Marketplace: Wolfram
