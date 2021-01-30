@@ -1,6 +1,6 @@
 {
     "name": "lsp-wl-client",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "publisher": "lsp-wl",
     "author": "kenkangxgwe",
     "license": "MIT",
@@ -95,7 +95,7 @@
                     "wolfram"
                 ],
                 "configurationAttributes": {
-                    "launch": {
+                    "attach": {
                         "properties": {
                             "trace": {
                                 "type": "boolean",
@@ -109,8 +109,7 @@
                     {
                         "type": "dap-wl",
                         "request": "attach",
-                        "name": "Create a new Wolfram Kernel",
-                        "stopOnEntry": true
+                        "name": "Create a new Wolfram Kernel"
                     }
                 ],
                 "configurationSnippets": [
@@ -120,8 +119,7 @@
                         "body": {
                             "type": "dap-wl",
                             "request": "attach",
-                            "name": "Create a new Wolfram Kernel",
-                            "stopOnEntry": true
+                            "name": "Create a new Wolfram Kernel"
                         }
                     }
                 ]
