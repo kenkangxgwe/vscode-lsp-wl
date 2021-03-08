@@ -1,8 +1,8 @@
 # Visual Studio Code Client for Wolfram Language Server
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-> by [kenkangxgwe](https://github.com/kenkangxgwe) and [hxianglong](https://github.com/huxianglong)
+[![Version](https://img.shields.io/github/v/release/kenkangxgwe/vscode-lsp-wl)](https://github.com/kenkangxgwe/vscode-lsp-wl/releases)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/lsp-wl.lsp-wl-client)](https://marketplace.visualstudio.com/items?itemName=lsp-wl.lsp-wl-client)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
@@ -27,7 +27,7 @@
 
 <!-- markdown-toc end -->
 
-*Please be advised to git pull the lastest minor version __0.2.x__. There are some
+*Please be advised to git pull the lastest minor version __0.3.x__. There are some
 breaking changes you want to know more in the server's
 [README](https://github.com/kenkangxgwe/lsp-wl/blob/master/README.md).*
 

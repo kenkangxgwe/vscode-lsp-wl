@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.9] - 2021-01-29
+## [0.1.10] - 2021-03-07
+
+## Changed
+
+- Upgrade vscode-languageclient to 7.0.0 (protocol 3.16).
+
+## [0.1.9] - 2021-01-29 🧨🐂
 
 ### Changed
 
@@ -14,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Unrecognizable `dap-wl` in `launch.json` configuration.
 
-## [0.1.8] - 2021-01-24 🧨🐂
+## [0.1.8] - 2021-01-24
 
 ### Added
 
