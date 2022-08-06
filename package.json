@@ -66,6 +66,18 @@
                     "type": "string",
                     "default": "/path/to/lsp-wl",
                     "description": "Path to wolfram language server folder."
+                },
+                "WolframLanguageServer.Diagnostics.mitigated": {
+                    "scope": "user",
+                    "type": "array",
+                    "default": [],
+                    "description": "A list of diagnostics labels that will be downgraded to the lowest serverity. They will not be listed under the \"Problems\" tab, but only shown under its position in the file."
+                },
+                "WolframLanguageServer.Diagnostics.suppressed": {
+                    "scope": "user",
+                    "type": "array",
+                    "default": [],
+                    "description": "A list of diagnostics labels that will be suppressed from display at all."
                 }
             }
         },

@@ -49,11 +49,17 @@ export async function activate(context: ExtensionContext): Promise<void> {
         }
     };
 
-    let debuggerPort: number = await getPort();
+    const debuggerPort: number = await getPort();
+    const mitigatedDiagnostics: [string] = config.get<[string]>("Diagnostics.mitigated");
+    const suppressedDiagnostics: [string] = config.get<[string]>("Diagnostics.suppressed");
     let clientOptions: LanguageClientOptions = {
         documentSelector: ["wolfram"],
         initializationOptions: {
-            debuggerPort: debuggerPort
+            debuggerPort: debuggerPort,
+            diagnosticsOverrides: {
+                mitigated: mitigatedDiagnostics,
+                suppressed: suppressedDiagnostics
+            }
         }
     };
 
