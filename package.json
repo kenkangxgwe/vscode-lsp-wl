@@ -1,14 +1,14 @@
 {
     "name": "lsp-wl-client",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "publisher": "lsp-wl",
     "author": "kenkangxgwe",
     "license": "MIT",
     "displayName": "Wolfram Language Server",
     "description": "VSCode client of the Wolfram Language Server.",
-    "main": "./out/extension",
+    "main": "./dist/extension",
     "engines": {
-        "vscode": "^1.52.0"
+        "vscode": "^1.63.0"
     },
     "activationEvents": [
         "onLanguage:wolfram"
@@ -83,7 +83,8 @@
                     ".m",
                     ".nb",
                     ".wl",
-                    ".wls"
+                    ".wls",
+                    ".wlnb"
                 ]
             }
         ],
@@ -127,14 +128,17 @@
         ]
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "webpack --mode production",
+        "webpack": "webpack --mode development",
+        "webpack-dev": "webpack --mode development --watch",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
         "test": "sh ./scripts/e2e.sh"
     },
     "dependencies": {
         "get-port": "^5.1.1",
-        "vscode-languageclient": "^7.0.0",
+        "vscode-languageclient": "^8.0.2-next.5",
+        "vscode-languageserver-textdocument": "^1.0.4",
         "vscode-debugadapter": "1.37.1"
     },
     "devDependencies": {

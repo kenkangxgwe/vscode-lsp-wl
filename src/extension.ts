@@ -1,5 +1,7 @@
 "use strict";
 
+import net = require("net");
+
 import {
     workspace, ExtensionContext, Disposable, WorkspaceConfiguration
 } from "vscode";
@@ -7,6 +9,7 @@ import {
 import {
     LanguageClient, LanguageClientOptions,
     NodeModule,
+    StreamInfo,
     TransportKind
 } from "vscode-languageclient/node";
 
@@ -16,6 +19,8 @@ import {
 } from "vscode";
 
 import getPort = require('get-port');
+
+let client: LanguageClient;
 
 export async function activate(context: ExtensionContext): Promise<void> {
 
@@ -56,13 +61,22 @@ export async function activate(context: ExtensionContext): Promise<void> {
     // client can be deactivated on extension deactivation
 
     // create the language client and start the client.
-    context.subscriptions.push(new LanguageClient("WolframLanguageServer",
-        "Wolfram Language Server", serverOptions, clientOptions).start());
+    client = new LanguageClient("WolframLanguageServer",
+        "Wolfram Language Server", serverOptions, clientOptions);
     // register debug type "dap-wl"
     context.subscriptions.push(debug.registerDebugConfigurationProvider("dap-wl",
         new WolframDebugConfigProvider()));
     context.subscriptions.push(debug.registerDebugAdapterDescriptorFactory("dap-wl",
         new WolframDebugAdapterDescriptorFactory(debuggerPort)));
+
+    client.start();
+}
+
+export function deactivate(): Thenable<void> | undefined {
+    if (!client) {
+        return undefined;
+    }
+    return client.stop();
 }
 
 class WolframDebugConfigProvider implements DebugConfigurationProvider { }
