@@ -1,8 +1,8 @@
 # Visual Studio Code Client for Wolfram Language Server
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-> by [kenkangxgwe](https://github.com/kenkangxgwe) and [hxianglong](https://github.com/huxianglong)
+[![Version](https://img.shields.io/github/v/release/kenkangxgwe/vscode-lsp-wl)](https://github.com/kenkangxgwe/vscode-lsp-wl/releases)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/lsp-wl.lsp-wl-client)](https://marketplace.visualstudio.com/items?itemName=lsp-wl.lsp-wl-client)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
@@ -17,6 +17,7 @@
         - [Hover](#hover)
         - [Completion](#completion)
         - [Diagnostics](#diagnostics)
+            - [Override Reporting Rules](#override-reporting-rules)
         - [Definition / References / Document Highlight](#definition--references--document-highlight)
         - [Code Action](#code-action)
         - [Document Color / Color Presentation](#document-color--color-presentation)
@@ -27,7 +28,7 @@
 
 <!-- markdown-toc end -->
 
-*Please be advised to git pull the lastest minor version __0.2.x__. There are some
+*Please be advised to git pull the lastest minor version __0.3.x__. There are some
 breaking changes you want to know more in the server's
 [README](https://github.com/kenkangxgwe/lsp-wl/blob/master/README.md).*
 
@@ -77,18 +78,22 @@ in the client side to make things work.
 After the extension is launched, go to **Preference -> Settings -> User Settings
 -> Extensions -> Wolfram Language Server**, and configure the following options:
 
-- *Port:* The client communicates with the server through port. Feel free to use
-  any port that is not occupied by other processes.
+- **`Port`** **:** The client communicates with the server through port. Feel
+  free to use any port that is not occupied by other processes.
 
-- *WLServer Path:* The path to the server repository.
+- **`WLServer Path`** **:** The path to the server repository.
 
-- *Wolfram Path:* The path of the `Wolfram` executable. **(NOT `Mathematica` or `WolframKernel`)**  
+- **`Wolfram Path`** **:** The path of the `Wolfram` executable. (NOT `Mathematica` or `WolframKernel`)  
   For **Windows** users, the default path is `C:\Program Files\Wolfram
   Research\Mathematica\11.*\wolfram.exe`.  
   For **MaxOS** users, the default path is
   `/Applications/Mathematica.app/Contents/MacOS/wolfram`.  
   For **Linux** users, the default path is
   `/usr/local/Wolfram/Mathematica/11.*/wolfram`.
+  
+- **`Diagnostics: Mitigated`** and **`Diagnostics: Suppressed`** **:** To adjust
+  how some of the diagnostics are reported, see [Diagnostics: Override Reporting
+  Rules](#override-reporting-rules).
 
 Restart VS Code to take effect.
 
@@ -168,6 +173,38 @@ Syntax error would be underlined. This feature is powered by
 you [@bostick](https://github.com/bostick).
 
 ![diagnostics](https://raw.githubusercontent.com/kenkangxgwe/lsp-wl/master/images/diagnostics.png)
+
+#### Override Reporting Rules
+
+To adjust how some of the diagnostics are reported, adding their corresponding
+tags in the
+[`settings.json`](https://code.visualstudio.com/docs/getstarted/settings). There
+are two kinds of ways to override the reporting rule:
+
+- **`Mitigated`** **:** The tags under this category will not be considered as an issue,
+and shown in the lowest severity, i.e. "hint". E.g. In VSCode, this will result
+in a elipesis under the reporting position but will not listed under the
+`Problems` tab.
+- **`Suppressed`** **:** The tags under this category will be completely ignored and not
+reported.
+
+An example of configuration in `settings.json` is shown below:
+
+``` json
+{
+    // ...
+    "WolframLanguageServer.Diagnostics.mitigated": [
+        "ExperimentalSymbol",
+        "UnusedParameter",
+        "UnusedVariable",
+    ],
+    "WolframLanguageServer.Diagnostics.suppressed": [
+        "DifferentLine",
+        "SuspiciousSessionSymbol",
+    ],
+    // ...
+}
+```
 
 ### Definition / References / Document Highlight
 
